@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "toggl_invoicing"
+version = "0.0.1"
+authors = [
+  { name="Miroslav Kolar", email="mirekkolar.cercany@gmail.com" },
+]
+description = "Tools for automatic summaries and invoicing from Toggl"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/mirekkolar/toggl-invoicing"
+Issues = "https://github.com/mirekkolar/toggl-invoicing/issues"
