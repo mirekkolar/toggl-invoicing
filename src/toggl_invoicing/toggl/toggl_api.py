@@ -2,7 +2,7 @@ from typing import Optional, List
 import requests
 from requests.auth import HTTPBasicAuth
 import os
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import logging
 
 API_URL = "https://api.track.toggl.com/api/v9"
@@ -37,7 +37,8 @@ class TogglApi:
             f"/me/time_entries",
             params={
                 "start_date": start_date.strftime("%Y-%m-%d"),
-                "end_date": end_date.strftime("%Y-%m-%d"),
+                # shifting + 1 days - Toggl API excludes entries with start_time < end_date:00:00:00
+                "end_date": (end_date + timedelta(days=1)).strftime("%Y-%m-%d"),
             },
         )
         time_entries_call.raise_for_status()
@@ -47,7 +48,11 @@ class TogglApi:
                 "project": project_mapping[entry["project_id"]],
                 "description": entry["description"],
                 "start": datetime.fromisoformat(entry["start"]),
-                "end": datetime.fromisoformat(entry["stop"]),
+                "end": (
+                    datetime.fromisoformat(entry["stop"])
+                    if entry.get("stop") is not None
+                    else None
+                ),
                 "duration": entry["duration"],
             }
             for entry in time_entries_call.json()
