@@ -57,3 +57,7 @@ API response is list of dictionary objects
     "duration": 16719
 }
 ```
+
+### Decent API usage
+
+The simple client doesn't handle [Toggl's general response logic](https://engineering.toggl.com/docs/#generic-responses), so make sure that your application doesn't retry indefinitely if there is HTTPError on the client.
