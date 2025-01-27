@@ -1,7 +1,5 @@
 import unittest
-from unittest import mock
-from toggl_invoicing.toggl import TogglApi
-from tests.test_toggl_invoicing.toggl.mock_api import mocked_requests_get
+from toggl_invoicing import TogglApi
 from datetime import date, datetime
 import logging
 import os
@@ -11,9 +9,9 @@ def setUpModule():
     global API
     logging.basicConfig(level=logging.INFO)
     logging.info("Testing real API")
-    if os.environ.get("API_TOKEN") is None:
+    if os.environ.get("TOGGL_API_TOKEN") is None:
         raise unittest.SkipTest(
-            "Real API test ignored - set API_TOKEN environment variable to run the test."
+            "Real API test ignored - set TOGGL_API_TOKEN environment variable to run the test."
         )
     API = TogglApi()
 

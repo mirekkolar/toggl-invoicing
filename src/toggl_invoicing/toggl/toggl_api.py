@@ -11,7 +11,9 @@ API_URL = "https://api.track.toggl.com/api/v9"
 class TogglApi:
 
     def __init__(self, api_token: Optional[str] = None, api_url: Optional[str] = None):
-        api_token = api_token if api_token is not None else os.environ["API_TOKEN"]
+        api_token = (
+            api_token if api_token is not None else os.environ["TOGGL_API_TOKEN"]
+        )
         self.auth = HTTPBasicAuth(api_token, "api_token")
         self.api_url = api_url if api_url is not None else API_URL
 

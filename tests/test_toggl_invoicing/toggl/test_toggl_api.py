@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from toggl_invoicing.toggl import TogglApi
+from toggl_invoicing import TogglApi
 from tests.test_toggl_invoicing.toggl.mock_api import mocked_requests_get
 from datetime import date, datetime
 import logging
