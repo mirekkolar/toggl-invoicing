@@ -27,6 +27,8 @@ python -m unittest discover tests -p "_test*.py" -v
 Package reads data from Toggl API using [API token](https://engineering.toggl.com/docs/authentication/#http-basic-auth-with-api-token), which must be provided
 1. as environment variable `API_TOKEN` (this is the recommended approach). We are using [python-dotenv](https://pypi.org/project/python-dotenv/), so you can declare this variable in your projects's .env file
 ```
+from toggl_invoicing.toggl import TogglApi
+
 API = TogglApi()
 ```
 2. or directly through `api_token` parameter of `TogglApi` class
