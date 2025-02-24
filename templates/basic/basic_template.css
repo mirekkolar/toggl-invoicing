@@ -1,0 +1,154 @@
+@page {
+    size: A4;
+    margin: 0cm;
+}
+
+@font-face {
+    font-family: "Default";
+    src: local("Calibri");
+}
+
+body {
+    margin: 3cm;
+    font-family: "Default";
+}
+
+#title {
+    color: darkslateblue;
+    text-align: center;
+    padding: 1cm 0 0 0;
+}
+
+#contacts {
+    position: absolute;
+    right: 1cm;
+    top: 5mm;
+}
+
+#contacts dt,
+dd {
+    display: inline;
+    margin: 0;
+}
+
+#contacts dt::before {
+    content: '';
+    display: block;
+}
+
+#contacts dt::after {
+    content: ':';
+}
+
+#contacts dt {
+    color: #a9a;
+}
+
+.parties-column {
+    float: left;
+    width: 40%;
+    white-space: pre-line;
+    margin: 0 5% 0 5%;
+}
+
+#supplier_address {
+    color: #a9a;
+}
+
+role {
+    text-decoration: underline;
+    text-align: center;
+    font-size: 14pt;
+}
+
+#payment-instructions {
+    border-style: solid;
+    overflow: hidden;
+    width: 100%;
+    font-size: 0.7em;
+}
+
+.payment-column {
+    float: left;
+    margin: 0 5% 0 5%;
+    white-space: pre-line;
+}
+
+#bank_account {
+    width: 50%;
+}
+
+#purpose_of_payment {
+    width: 30%
+}
+
+.break {
+    height: 1em;
+    clear: both;
+}
+
+
+#items {
+    width: 100%;
+}
+
+#items th {
+    border-bottom: .2mm solid #a9a;
+    color: #a9a;
+    font-size: 10pt;
+    font-weight: 400;
+    padding-bottom: .25cm;
+    text-transform: uppercase;
+}
+
+#items td {
+    padding-top: 7mm;
+}
+
+#items th,
+td {
+    text-align: center;
+}
+
+#items th:first-of-type,
+td:first-of-type {
+    text-align: left;
+}
+
+#items td:last-of-type {
+    color: darkslateblue;
+    font-weight: bold;
+    text-align: right;
+}
+
+#total {
+    position: absolute;
+    bottom: 0;
+    background: #f6f6f6;
+    border-color: #f6f6f6;
+    border-style: solid;
+    border-width: 2cm 3cm 2cm 3cm;
+    margin: 0 -3cm 0 -3cm;
+    font-size: 20pt;
+    width: 100%;
+}
+
+#total th {
+    border-bottom: .2mm solid #a9a;
+    color: #a9a;
+    font-size: 10pt;
+    font-weight: 400;
+    padding-bottom: .25cm;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#total td {
+    padding-top: 7mm;
+    text-align: center;
+}
+
+#total td:last-of-type {
+    color: darkslateblue;
+    font-weight: bold;
+}

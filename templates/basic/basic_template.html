@@ -1,0 +1,98 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="basic_template.css" type="text/css" rel="stylesheet">
+  <link href="basic_template.css" media="print" rel="stylesheet">
+  <title>Invoice</title>
+</head>
+
+<body>
+  <h1 id="title">Invoice no. {{ invoice_number }}</h1>
+
+  <dl id="contacts">
+    <dt>Email</dt>
+    <dd>{{ contact_email }}</dd>
+    <dt>Phone</dt>
+    <dd>{{ contact_phone }}</dd>
+    <dt>Date</dt>
+    <dd>{{ invoice_date }}</dd>
+  </dl>
+
+  <div id="parties">
+    <div id="supplier" class="parties-column">
+      <role>Supplier</role>
+      <address id="supplier_address">
+        {{ supplier_address }}
+      </address>
+    </div>
+    <div id="subscriber" class="parties-column">
+      <role>Subscriber</role>
+      <address id="subscriber_address">
+        {{ subscriber_address }}
+      </address>
+    </div>
+  </div>
+
+  <div class="break"></div>
+
+  <div id="payment-instructions">
+    <div id="bank_account" class="payment-column">
+      <role>Bank account</role>
+      <p>
+        {{ bank_account }}
+      </p>
+    </div>
+    <div id="purpose_of_payment" class="payment-column">
+      <role></role>
+      <p>
+        {{ purpose_of_payment }}
+      </p>
+    </div>
+  </div>
+
+  <div class="break"></div>
+
+  <p>{{ invoice_description }} </p>
+
+  <div class="break"></div>
+
+  <table id="items">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.description }}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.amount }}</td>
+        <td>{{ item.subtotal }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <footer>
+    <table id="total">
+      <thead>
+        <tr>
+          <th>Due by</th>
+          <th>Total due</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ invoice_due_date }}</td>
+          <td>{{ invoice_total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </footer>
+</body>
+
+</html>

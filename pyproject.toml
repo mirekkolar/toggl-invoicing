@@ -19,7 +19,9 @@ license = "MIT"
 license-files = ["LICENSE"]
 dependencies = [
   "python-dotenv",
-  "requests"
+  "requests",
+  "weasyprint",
+  "Jinja2",
 ]
 
 [project.urls]

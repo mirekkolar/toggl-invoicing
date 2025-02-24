@@ -1,0 +1,18 @@
+{
+    "invoice_number": "20250001",
+    "invoice_date": "2025/02/01",
+    "invoice_description": "We're invoicing your for services provided during 2025/01/01 - 2025/01/31",
+    "invoice_due_date": "2025/02/14",
+    "invoice_total": "$10,545.00",
+    "contact_email": "wile.coyote@acme.com",
+    "contact_phone": "123 456 789",    
+    "supplier_address": "Acme Corporation, Inc.\n177 Big Piece Rd\nFairfield, New Jersey\nUnited States",
+    "subscriber_address": "Stark Industries\n800 Welch Rd\nPalo Alto, CA 94304\nUnited States",
+    "bank_account": "ACCOUNT NUMBER: 8209008908\nSWIFT: USBKUS44XXX",
+    "purpose_of_payment": "Purpose of payment:\n/BUSINESS/SERVICE TRADE",
+    "items": [
+        {"description": "Website design", "price": "$34.20", "quantity": "100", "subtotal": "$3,420.00"},
+        {"description": "Website development", "price": "$45.50", "quantity": "100", "subtotal": "$4,550.00"},
+        {"description": "Website integration", "price": "$25.75", "quantity": "100", "subtotal": "$2,575.00"}
+    ]
+}
