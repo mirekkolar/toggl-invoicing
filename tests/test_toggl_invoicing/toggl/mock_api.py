@@ -16,7 +16,7 @@ def mocked_requests_get(*args, **kwargs):
                 raise HTTPError(200, "Some error happened!")
 
     url = args[0]
-    if url == "http://api.mock.com/me/projects":
+    if url.split("/")[-1] == "projects":
         return MockResponse(
             status_code=200,
             json_data=[
@@ -25,7 +25,7 @@ def mocked_requests_get(*args, **kwargs):
                 {"id": 3456, "workspace_id": 12345, "name": "family"},
             ],
         )
-    elif url == "http://api.mock.com/me/time_entries":
+    elif url.split("/")[-1] == "time_entries":
         params = kwargs["params"]
         # fmt: off
         json_data = [

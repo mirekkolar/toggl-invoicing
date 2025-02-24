@@ -15,11 +15,9 @@ TEST_INVOICE_METADATA = {
 
 class ComponentDesignTests:
 
-    def test_invoice_data_format(self):
+    def test_invoice_data_format(self, start_date: date, end_date: date):
         parser = self.parser
-        invoice_data = parser.get_invoice_data(
-            start_date=date(2025, 1, 1), end_date=date(2025, 1, 31)
-        )
+        invoice_data = parser.get_invoice_data(start_date, end_date)
         self.assertIsInstance(
             invoice_data, dict, msg="Invoice data is parsed as dictionary"
         )
@@ -41,7 +39,7 @@ class ComponentDesignTests:
         )
         for item in invoice_items:
             self.assertIsInstance(item, dict, msg="'items' field is a list of objects")
-            mandatory_item_fields = ["description", "price", "quantity", "subtotal"]
+            mandatory_item_fields = ["description", "price", "amount", "subtotal"]
             self.assertTrue(
                 all([field in item for field in mandatory_item_fields]),
                 msg=f"Each item should contain fields {', '.join(mandatory_item_fields)}",

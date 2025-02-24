@@ -40,19 +40,19 @@ class AbstractTemplateDataParser(ABC):
                 {
                     "description": "Website design",
                     "price": "$34.20",
-                    "quantity": "100",
+                    "amount": "100",
                     "subtotal": "$3,420.00",
                 },
                 {
                     "description": "Website development",
                     "price": "$45.50",
-                    "quantity": "100",
+                    "amount": "100",
                     "subtotal": "$4,550.00",
                 },
                 {
                     "description": "Website integration",
                     "price": "$25.75",
-                    "quantity": "100",
+                    "amount": "100",
                     "subtotal": "$2,575.00",
                 },
             ],

@@ -37,3 +37,8 @@ class ComponentDesignTests(unittest.TestCase, ComponentDesignCommonTests):
 
     def setUp(self):
         self.parser = DummyTemplateDataParser(**TEST_INVOICE_METADATA)
+
+    def test_invoice_data_format(self):
+        super().test_invoice_data_format(
+            start_date=date(2025, 1, 1), end_date=date(2025, 1, 31)
+        )

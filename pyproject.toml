@@ -18,10 +18,12 @@ classifiers = [
 license = "MIT"
 license-files = ["LICENSE"]
 dependencies = [
+  "Jinja2",
+  "numpy>=2",
+  "pandas",
   "python-dotenv",
   "requests",
   "weasyprint",
-  "Jinja2",
 ]
 
 [project.urls]
