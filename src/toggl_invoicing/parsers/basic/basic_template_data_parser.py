@@ -20,10 +20,6 @@ def round_vector(x: pd.Series) -> pd.Series:
     return base + add_integer
 
 
-def price_format(x: float) -> str:
-    return f"{x:,}"
-
-
 class BasicTemplateDataParser(AbstractTemplateDataParser):
 
     def __init__(
@@ -42,12 +38,14 @@ class BasicTemplateDataParser(AbstractTemplateDataParser):
             [date, date, dict], str
         ] = lambda start_date, end_date, invoice_metadata: "",
         purpose_of_payment_func: Callable[[dict], str] = lambda invoice_metadata: "",
+        price_format: Callable[[float], str] = lambda x: f"{x:,.2f}",
         **kwargs,
     ):
         self.project = project
         self.unit_price = unit_price
         self.invoice_description_func = invoice_description_func
         self.purpose_of_payment_func = purpose_of_payment_func
+        self.price_format = price_format
         self.invoice_metadata = {
             **{
                 "project": project,
@@ -94,14 +92,14 @@ class BasicTemplateDataParser(AbstractTemplateDataParser):
         parsed_time_entries["subtotal"] = (
             parsed_time_entries["duration_rounded"] * self.unit_price
         )
-        invoice_total = price_format(parsed_time_entries["subtotal"].sum())
-        parsed_time_entries["price"] = price_format(self.unit_price)
+        invoice_total = self.price_format(parsed_time_entries["subtotal"].sum())
+        parsed_time_entries["price"] = self.price_format(self.unit_price)
         parsed_time_entries["amount"] = (
             parsed_time_entries["duration_rounded"].astype("int").astype("str")
         )
         items = (
             parsed_time_entries[["description", "price", "amount", "subtotal"]]
-            .assign(subtotal=lambda df: df["subtotal"].apply(price_format))
+            .assign(subtotal=lambda df: df["subtotal"].apply(self.price_format))
             .to_dict(orient="records")
         )
         return {
