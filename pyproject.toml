@@ -19,7 +19,7 @@ license = "MIT"
 license-files = ["LICENSE"]
 dependencies = [
   "Jinja2",
-  "numpy>=2",
+  "numpy",
   "pandas",
   "python-dotenv",
   "requests",
