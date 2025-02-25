@@ -35,7 +35,11 @@ class ComponentDesignTests(unittest.TestCase, ComponentDesignCommonTests):
 
     def setUp(self):
         self.parser = BasicTemplateDataParser(
-            project="project1", unit_price=1500, **TEST_INVOICE_METADATA
+            project="project1",
+            unit_price=1500,
+            invoice_description_func=lambda start_date, end_date, invoice_metadata: f"We're invoicing your for development of {invoice_metadata['project']} project in period {start_date.strftime('%Y/%m/%d')} - {end_date.strftime('%Y/%m/%d')}",
+            purpose_of_payment_func=lambda invoice_metadata: "Purpose of payment:\n/BUSINESS/SERVICE TRADE",
+            **TEST_INVOICE_METADATA,
         )
 
     def test_invoice_data_format(self):
@@ -49,7 +53,7 @@ class ComponentDesignTests(unittest.TestCase, ComponentDesignCommonTests):
             "contact_email", "contact_phone", "supplier_address", "subscriber_address",
             "bank_account", "items",
             # specific fields in this parser
-            "invoice_description", "purpose_of_payment",
+            "project", "unit_price", "invoice_description", "purpose_of_payment",
         ] 
         # fmt: on
         self.assertSetEqual(
@@ -59,11 +63,13 @@ class ComponentDesignTests(unittest.TestCase, ComponentDesignCommonTests):
         )
         self.assertEqual(
             invoice_data["invoice_description"],
-            f"We're invoicing your for services provided during period {date(2025, 1, 1).strftime('%Y/%m/%d')} - {date(2025, 1, 31).strftime('%Y/%m/%d')}",
+            f"We're invoicing your for development of project1 project in period 2025/01/01 - 2025/01/31",
+            msg="Invoice description is constructed from 'invoice_description_func'",
         )
         self.assertEqual(
             invoice_data["purpose_of_payment"],
             "Purpose of payment:\n/BUSINESS/SERVICE TRADE",
+            msg="Purpose of payment is constructed from 'purpose_of_payment_func'",
         )
 
 
@@ -105,4 +111,51 @@ class ComputationTests(unittest.TestCase):
         self.assertTrue(
             all(invoice_items["amount"] == invoice_items["amount"].round()),
             msg="Item amounts are rounded to full hour",
+        )
+
+
+class ParameterTests(unittest.TestCase):
+
+    def test_no_invoice_description(self):
+        parser = BasicTemplateDataParser(
+            project="project1", unit_price=1500, **TEST_INVOICE_METADATA
+        )
+        invoice_data = parser.get_invoice_data(
+            start_date=date(2025, 1, 1), end_date=date(2025, 1, 31)
+        )
+        self.assertEqual(
+            invoice_data["invoice_description"],
+            "",
+            msg="Invoice description is empty string if 'invoice_description_func' is not provided",
+        )
+
+    def test_no_invoice_description(self):
+        parser = BasicTemplateDataParser(
+            project="project1", unit_price=1500, **TEST_INVOICE_METADATA
+        )
+        invoice_data = parser.get_invoice_data(
+            start_date=date(2025, 1, 1), end_date=date(2025, 1, 31)
+        )
+        self.assertEqual(
+            invoice_data["purpose_of_payment"],
+            "",
+            msg="Purpose of payment is empty string if 'purpose_of_payment_func' is not provided",
+        )
+
+    def test_price_parameter(self):
+        parser = BasicTemplateDataParser(
+            project="project1", unit_price=1000, **TEST_INVOICE_METADATA
+        )
+        invoice_data = parser.get_invoice_data(
+            start_date=date(2025, 1, 1), end_date=date(2025, 1, 31)
+        )
+        invoice_items = pd.DataFrame(invoice_data["items"]).assign(
+            price=lambda df: df["price"].apply(parse_number),
+            amount=lambda df: df["amount"].apply(parse_number),
+            subtotal=lambda df: df["subtotal"].apply(parse_number),
+        )
+        self.assertEqual(
+            set(invoice_items["price"]),
+            {1000},
+            msg="Unit price of invoice items is controlled by 'unit_price' parameter",
         )

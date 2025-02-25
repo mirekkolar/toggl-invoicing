@@ -5,6 +5,7 @@ from datetime import date
 from toggl_invoicing import TogglApi
 import pandas as pd
 import numpy as np
+from typing import Callable
 
 
 def round_vector(x: pd.Series) -> pd.Series:
@@ -37,24 +38,37 @@ class BasicTemplateDataParser(AbstractTemplateDataParser):
         supplier_address: str,
         subscriber_address: str,
         bank_account: str,
+        invoice_description_func: Callable[
+            [date, date, dict], str
+        ] = lambda start_date, end_date, invoice_metadata: "",
+        purpose_of_payment_func: Callable[[dict], str] = lambda invoice_metadata: "",
         **kwargs,
     ):
         self.project = project
         self.unit_price = unit_price
+        self.invoice_description_func = invoice_description_func
+        self.purpose_of_payment_func = purpose_of_payment_func
         self.invoice_metadata = {
-            "invoice_number": invoice_number,
-            "invoice_date": invoice_date,
-            "invoice_due_date": invoice_due_date,
-            "contact_email": contact_email,
-            "contact_phone": contact_phone,
-            "supplier_address": supplier_address,
-            "subscriber_address": subscriber_address,
-            "bank_account": bank_account,
+            **{
+                "project": project,
+                "unit_price": unit_price,
+                "invoice_number": invoice_number,
+                "invoice_date": invoice_date,
+                "invoice_due_date": invoice_due_date,
+                "contact_email": contact_email,
+                "contact_phone": contact_phone,
+                "supplier_address": supplier_address,
+                "subscriber_address": subscriber_address,
+                "bank_account": bank_account,
+            },
+            **kwargs,
         }
 
     def get_invoice_data(self, start_date: date, end_date: date) -> dict:
-        invoice_description = f"We're invoicing your for services provided during period {start_date.strftime('%Y/%m/%d')} - {end_date.strftime('%Y/%m/%d')}"
-        purpose_of_payment = "Purpose of payment:\n/BUSINESS/SERVICE TRADE"
+        invoice_description = self.invoice_description_func(
+            start_date, end_date, self.invoice_metadata
+        )
+        purpose_of_payment = self.purpose_of_payment_func(self.invoice_metadata)
         time_entries = TogglApi().get_time_entries(
             start_date=start_date, end_date=end_date
         )
